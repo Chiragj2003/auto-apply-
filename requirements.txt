@@ -1,0 +1,18 @@
+# Email Outreach Pro - Single File Streamlit Application
+# Python 3.10+
+
+# Web Framework & UI
+streamlit>=1.30.0
+
+# Database (Synchronous PostgreSQL)
+psycopg2-binary>=2.9.0
+
+# AI
+google-generativeai>=0.3.0
+
+# Environment
+python-dotenv>=1.0.0
+
+# Excel support (for data import)
+openpyxl>=3.1.0
+pandas>=2.0.0
