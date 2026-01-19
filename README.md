@@ -40,24 +40,8 @@ auto-apply/
 ├── app.py              # Single file - entire application
 ├── .env                # Environment variables (secrets)
 ├── requirements.txt    # Python dependencies
-├── Procfile           # For Railway/Heroku deployment
+├── Procfile            # For Railway/Heroku deployment
 └── README.md
-│   ├── config.py              # Environment configuration
-│   ├── import_contacts.py     # CSV import/export utility
-│   ├── requirements.txt       # Python dependencies
-│   ├── Dockerfile             # Container deployment
-│   ├── railway.toml           # Railway config
-│   └── .env.example           # Environment template
-│
-└── frontend/                   # Next.js Dashboard
-    ├── src/
-    │   └── app/
-    │       ├── layout.tsx     # Root layout
-    │       ├── page.tsx       # Main dashboard
-    │       └── globals.css    # Tailwind styles
-    ├── package.json
-    ├── tailwind.config.js
-    └── .env.example
 ```
 
 ## 🚀 Quick Start
