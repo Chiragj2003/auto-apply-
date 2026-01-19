@@ -1,53 +1,47 @@
-# 📧 Email Outreach System
+# 📧 Auto Apply - Email Outreach System
 
-A professional, automated email campaign system for job outreach with AI-generated personalized emails.
+A simple, single-file Python + Streamlit app that automatically sends personalized job application emails to HR contacts.
 
-![Architecture](https://img.shields.io/badge/Architecture-Microservices-blue)
-![Python](https://img.shields.io/badge/Python-3.11+-green)
-![Next.js](https://img.shields.io/badge/Next.js-14-black)
+![Python](https://img.shields.io/badge/Python-3.10+-green)
+![Streamlit](https://img.shields.io/badge/Streamlit-1.30+-red)
+![PostgreSQL](https://img.shields.io/badge/PostgreSQL-Neon-blue)
 ![License](https://img.shields.io/badge/License-MIT-yellow)
 
 ## 🏗️ Architecture
 
 ```
 ┌─────────────────────────────────────────────────────────────────┐
-│                    Next.js Frontend (Vercel)                     │
-│                     Dashboard & Control Panel                    │
-└─────────────────────────┬───────────────────────────────────────┘
-                          │ REST API
-                          ▼
-┌─────────────────────────────────────────────────────────────────┐
-│                 Python FastAPI Backend (Railway)                 │
-│                    Background Email Worker                       │
+│                 Streamlit App (Single File)                      │
+│              Dashboard + Email Sending + Controls                │
 └────────────┬────────────────────────────────────┬───────────────┘
              │                                    │
              ▼                                    ▼
 ┌────────────────────────┐          ┌─────────────────────────────┐
 │   Neon PostgreSQL DB   │          │   Gmail SMTP + Gemini AI    │
-│   (Campaign Storage)   │          │   (Send + Generate)         │
+│   (1800+ HR Contacts)  │          │   (Send + Generate)         │
 └────────────────────────┘          └─────────────────────────────┘
 ```
 
 ## ✨ Features
 
-- **🎯 Dashboard UI** - Real-time stats, progress tracking, campaign controls
-- **📊 Email Management** - View pending, sent, and failed emails in tabs
-- **🤖 AI-Powered** - Gemini generates personalized, professional emails
-- **📎 Resume Attachment** - Automatically attaches your resume
-- **⏱️ Rate Limiting** - Random delays (10-30 min) to avoid spam flags
-- **🔄 Resume-Safe** - Restarts don't send duplicate emails
-- **🌐 Always Online** - PostgreSQL database, no local state dependency
-- **☁️ Cloud Ready** - Deploy to Railway + Vercel (free tiers available)
+- **📊 Dashboard** - Real-time stats, progress tracking
+- **🎯 Custom Send** - Send emails one by one with control
+- **🤖 AI-Powered** - Gemini generates personalized emails per company
+- **📎 Resume Attachment** - Auto-attaches your resume from database
+- **⏱️ Rate Limiting** - Random delays (10-30 min) to avoid spam
+- **🧪 Test Mode** - Test contacts with filter support
+- **📬 Reply-To** - Replies go to your primary email
+- **☁️ Cloud Ready** - Deploy to Railway/Render
 
 ## 📁 Project Structure
 
 ```
-mail-sending-python/
-├── backend/                    # Python FastAPI
-│   ├── main.py                # API endpoints & campaign worker
-│   ├── database.py            # Neon PostgreSQL operations
-│   ├── email_sender.py        # Gmail SMTP client
-│   ├── gemini_client.py       # Gemini AI email generation
+auto-apply/
+├── app.py              # Single file - entire application
+├── .env                # Environment variables (secrets)
+├── requirements.txt    # Python dependencies
+├── Procfile           # For Railway/Heroku deployment
+└── README.md
 │   ├── config.py              # Environment configuration
 │   ├── import_contacts.py     # CSV import/export utility
 │   ├── requirements.txt       # Python dependencies
@@ -70,188 +64,101 @@ mail-sending-python/
 
 ### Prerequisites
 
-- Python 3.11+
-- Node.js 18+
+- Python 3.10+
 - Gmail account with App Password
-- Neon account (free tier)
-- Gemini API key
+- Neon PostgreSQL account (free)
+- Gemini API key (free)
 
-### 1️⃣ Setup Neon Database
-
-1. Go to [neon.tech](https://neon.tech) and create a free account
-2. Create a new project
-3. Copy the connection string (looks like `postgresql://user:pass@ep-xxx.region.aws.neon.tech/dbname`)
-
-### 2️⃣ Get Gmail App Password
-
-1. Enable 2-Step Verification on your Google Account
-2. Go to Google Account → Security → 2-Step Verification → App Passwords
-3. Generate a new app password for "Mail"
-4. Copy the 16-character password
-
-### 3️⃣ Get Gemini API Key
-
-1. Go to [makersuite.google.com/app/apikey](https://makersuite.google.com/app/apikey)
-2. Create a new API key
-3. Copy the key
-
-### 4️⃣ Setup Backend
+### 1️⃣ Clone & Install
 
 ```bash
-cd backend
-
-# Create virtual environment
-python -m venv venv
-venv\Scripts\activate  # Windows
-# source venv/bin/activate  # Mac/Linux
+git clone https://github.com/Chiragj2003/auto-apply-.git
+cd auto-apply-
 
 # Install dependencies
 pip install -r requirements.txt
-
-# Create .env file
-copy .env.example .env
-# Edit .env with your credentials
-
-# Place your resume
-# Copy your resume.pdf to the backend folder
-
-# Run the server
-uvicorn main:app --reload --port 8000
 ```
 
-### 5️⃣ Setup Frontend
+### 2️⃣ Setup Environment
+
+Create a `.env` file:
+
+```env
+# Database (Neon PostgreSQL)
+DATABASE_URL=postgresql://user:pass@ep-xxx.aws.neon.tech/dbname?sslmode=require
+
+# Gmail SMTP
+SENDER_EMAIL=your-email@gmail.com
+SENDER_PASSWORD=your-16-char-app-password
+
+# Gemini AI
+GEMINI_API_KEY=your-gemini-api-key
+
+# Your Profile
+SENDER_NAME=Your Name
+SENDER_PHONE=1234567890
+SENDER_LINKEDIN=https://linkedin.com/in/yourprofile
+GITHUB=https://github.com/yourusername
+```
+
+### 3️⃣ Run Locally
 
 ```bash
-cd frontend
-
-# Install dependencies
-npm install
-
-# Create .env.local
-copy .env.example .env.local
-
-# Run development server
-npm run dev
+streamlit run app.py
 ```
 
-### 6️⃣ Import Contacts
+Open http://localhost:8501
 
-Create a CSV file with your contacts:
+## 📷 Screenshots
 
-```csv
-serial_number,name,email,title,company
-1,John Doe,john@company.com,Engineering Manager,Tech Corp
-2,Jane Smith,jane@startup.io,CTO,StartupXYZ
-```
+### Dashboard
+- View total contacts, sent, pending, failed counts
+- Start/pause bulk campaign
+- Progress tracking
 
-Import to database:
+### Custom Send
+- Filter by test/regular contacts
+- Send individual emails with one click
+- Search by name, email, company
 
-```bash
-cd backend
-python import_contacts.py import your_contacts.csv
-```
+## 🌐 Deploy to Railway
 
-### 7️⃣ Start Campaign
+1. Go to [railway.app](https://railway.app)
+2. Connect your GitHub repo
+3. Add environment variables in Railway dashboard
+4. Deploy!
 
-1. Open http://localhost:3000 in your browser
-2. Verify contacts are loaded (check Pending tab)
-3. Click "Start Campaign" on the dashboard
-4. Monitor progress in real-time!
+## ⚙️ How It Works
 
-## ⚙️ Configuration
+1. **HR contacts** stored in Neon PostgreSQL
+2. **Gemini AI** generates personalized email for each company
+3. **Gmail SMTP** sends email with resume attached
+4. **BCC** sends copy to your primary email
+5. **Reply-To** ensures replies come to your main inbox
 
-### Backend Environment Variables
-
-| Variable | Description | Required |
-|----------|-------------|----------|
-| `DATABASE_URL` | Neon PostgreSQL connection string | ✅ |
-| `GMAIL_EMAIL` | Your Gmail address | ✅ |
-| `GMAIL_APP_PASSWORD` | Gmail App Password (16 chars) | ✅ |
-| `GEMINI_API_KEY` | Google Gemini API key | ✅ |
-| `RESUME_PATH` | Path to resume file | ❌ (default: resume.pdf) |
-
-### Frontend Environment Variables
-
-| Variable | Description | Required |
-|----------|-------------|----------|
-| `NEXT_PUBLIC_API_URL` | Backend API URL | ✅ |
-
-## 🌐 Deployment
-
-### Deploy Backend to Railway
-
-1. Create account at [railway.app](https://railway.app)
-2. Create new project → Deploy from GitHub repo
-3. Select the `backend` folder
-4. Add environment variables in Railway dashboard
-5. Deploy!
-
-### Deploy Frontend to Vercel
-
-1. Create account at [vercel.com](https://vercel.com)
-2. Import your GitHub repository
-3. Set root directory to `frontend`
-4. Add `NEXT_PUBLIC_API_URL` (your Railway URL)
-5. Deploy!
-
-## 📡 API Endpoints
-
-| Endpoint | Method | Description |
-|----------|--------|-------------|
-| `/stats` | GET | Get campaign statistics |
-| `/start-campaign` | POST | Start background worker |
-| `/pause-campaign` | POST | Pause campaign |
-| `/stop-campaign` | POST | Stop campaign |
-| `/emails/pending` | GET | List pending emails |
-| `/emails/sent` | GET | List sent emails |
-| `/emails/failed` | GET | List failed emails |
-| `/emails/upload` | POST | Bulk upload contacts |
-| `/emails/retry/{id}` | POST | Retry failed email |
-| `/emails/retry-all-failed` | POST | Retry all failed |
-
-## 🛡️ Safety Features
+## �️ Safety Features
 
 - **Rate Limiting**: 10-30 minute random delays between emails
-- **Daily Limits**: Configurable max emails per day (default: 50)
 - **Duplicate Prevention**: Unique email constraint in database
-- **Graceful Shutdown**: Completes current email before stopping
-- **Error Handling**: Failed emails are marked, not lost
-
-## 📝 Customizing Email Template
-
-Edit the prompt in `backend/gemini_client.py`:
-
-```python
-self.system_prompt = """Your custom prompt here..."""
-```
+- **Resume Attachment**: Auto-attaches from database
 
 ## 🔧 Troubleshooting
 
 ### "SMTP Authentication Failed"
-- Make sure you're using an **App Password**, not your Gmail password
+- Use an **App Password**, not your Gmail password
 - Enable 2-Step Verification first
 
 ### "Database connection failed"
-- Check your DATABASE_URL includes `?sslmode=require`
-- Verify your Neon project is active
-
-### "Gemini API error"
-- Check your API key is valid
-- Verify you haven't exceeded rate limits
+- Check DATABASE_URL includes `?sslmode=require`
 
 ### Emails going to spam
 - Reduce sending frequency
-- Use a professional email signature
-- Avoid spam trigger words in content
+- Use professional email content
 
 ## 📄 License
 
 MIT License - feel free to use for your job search!
 
-## 🤝 Contributing
-
-Contributions welcome! Please feel free to submit a Pull Request.
-
 ---
 
-Built with ❤️ for job seekers everywhere
+Built with ❤️ for job seekers
